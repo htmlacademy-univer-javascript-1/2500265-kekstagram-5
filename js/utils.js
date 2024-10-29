@@ -20,10 +20,13 @@ const randomIdInRange = (bottom, top) => {
   };
 };
 
+const isEscape = (evt) => evt.key === 'Escape';
+
 const randomValueFromArray = (currentArray) => currentArray[getRandomInt(0, currentArray.length - 1)];
 
 export {
   getRandomInt,
   randomIdInRange,
-  randomValueFromArray
+  randomValueFromArray,
+  isEscape
 };

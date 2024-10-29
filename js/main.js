@@ -1,1 +1,1 @@
-import './draw-miniatures.js';
+import './make-all-photos.js';
