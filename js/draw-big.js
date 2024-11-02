@@ -18,12 +18,12 @@ const makeEmptyComments = () => {
   bigPictureAllComments.innerHTML = '';
 };
 
-const remakeComment = (currentComment) => {
+const remakeComment = (comment) => {
   const remadeComment = bigPictureCurrentCommentTemplate.cloneNode(true);
   const userAvatar = remadeComment.querySelector('.social__picture');
-  userAvatar.src = currentComment.avatar;
-  userAvatar.alt = currentComment.name;
-  remadeComment.querySelector('.social__text').textContent = currentComment.message;
+  userAvatar.src = comment.avatar;
+  userAvatar.alt = comment.name;
+  remadeComment.querySelector('.social__text').textContent = comment.message;
   return remadeComment;
 };
 
@@ -35,7 +35,7 @@ const remakePhoto = () => {
 
   makeEmptyComments();
   for (let i = 0; i < currentPhoto.comments.length; i++){
-    bigPictureAllComments.appendChild(remakeComment(currentPhoto[i]));
+    bigPictureAllComments.appendChild(remakeComment(currentPhoto.comments[i]));
   }
 };
 
