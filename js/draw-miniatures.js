@@ -1,7 +1,6 @@
 const pictureElements = document.querySelector('.pictures');
 const photoTemplate = document.querySelector('#picture').content.querySelector('.picture');
 
-//const makeAllPictures = getPosts();
 const makeAllPictures = (allPictures) => {
   const fragmentPictures = document.createDocumentFragment();
 
