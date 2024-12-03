@@ -1,4 +1,5 @@
 import {isEscape} from './utils.js';
+import { addEventListenerToScaleElemets, removeEventListenerFromScaleElemets, addFilter, removeFilter } from './effect.js';
 
 const MAX_HASHTAG_NUMBER = 5;
 const SYMBOLS_FOR_VALIDATION = /^#[a-zа-яё0-9]{1,19}$/i;
@@ -13,6 +14,7 @@ const body = document.querySelector('body');
 const currentForm = document.querySelector('.img-upload__form');
 const uploadOverlay = currentForm.querySelector('.img-upload__overlay');
 const fieldForHashtags = currentForm.querySelector('.text__hashtags');
+const scaleImageValueElement = currentForm.querySelector('.scale__control--value');
 
 const pristine = new Pristine(currentForm, {
   classTo: 'img-upload__field-wrapper',
@@ -23,14 +25,23 @@ const showForm = () => {
   uploadOverlay.classList.remove('hidden');
   body.classList.add('modal-open');
   document.addEventListener('keydown', onDocumentKeydown);
+
+  addEventListenerToScaleElemets();
+  addFilter();
 };
+
 const hideForm = () => {
   currentForm.reset();
   pristine.reset();
   uploadOverlay.classList.add('hidden');
   body.classList.remove('modal-open');
   document.removeEventListener('keydown', onDocumentKeydown);
+  removeEventListenerFromScaleElemets();
+  removeFilter();
+
+  scaleImageValueElement.value = '100%';
 };
+
 const prepareTags = (string) => string.trim().split(' ').filter((currentTag) => Boolean(currentTag.length));
 const isOnFocuse = () => document.activeElement === fieldForHashtags || document.activeElement === currentForm.querySelector('.text__description');
 const makeCountValidation = (value) => prepareTags(value).length <= MAX_HASHTAG_NUMBER;
@@ -42,7 +53,7 @@ const makeUniqueValidation = (value) => {
 };
 
 function onDocumentKeydown(evt) {
-  if (isEscape && !isOnFocuse()) {
+  if (isEscape(evt) && !isOnFocuse()) {
     evt.preventDefault();
     hideForm();
   }
