@@ -1,5 +1,6 @@
 import { isEscape } from './utils.js';
 
+const COMMENT_STEP = 5;
 const bigPicture = document.querySelector('.big-picture');
 const bigPictureClosing = bigPicture.querySelector('.big-picture__cancel');
 const bigPicturePhoto = bigPicture.querySelector('.big-picture__img').querySelector('img');
@@ -28,7 +29,7 @@ const remakeComment = (comment) => {
 
 const renderComments = () => {
   let currentIndex = 0;
-  for (let i = currentCommentIndex; i < currentCommentIndex + 5; i++) {
+  for (let i = currentCommentIndex; i < currentCommentIndex + COMMENT_STEP; i++) {
     if (i === currentPhoto.comments.length) {
       bigPictureCommentsLoaderButton.classList.add('hidden');
       currentIndex = i - 1;
@@ -57,10 +58,15 @@ const listenKeydown = (evt) => {
   }
 };
 
+const onClosePostClick = () => closeBigPost();
+const onCommentsLoaderButtonClick = () => renderComments();
+
 const openBigPost = (currentPost) => {
   bigPicture.classList.remove('hidden');
   document.body.classList.add('modal-open');
   document.addEventListener('keydown', listenKeydown);
+  bigPictureClosing.addEventListener('click', onClosePostClick);
+  bigPictureCommentsLoaderButton.addEventListener('click', onCommentsLoaderButtonClick);
   currentPhoto = currentPost;
   remakePhoto();
 };
@@ -70,15 +76,9 @@ function closeBigPost() {
   document.body.classList.remove('modal-open');
   bigPictureCommentsLoaderButton.classList.remove('hidden');
   document.removeEventListener('keydown', listenKeydown);
+  bigPictureClosing.removeEventListener('click', onClosePostClick);
+  bigPictureCommentsLoaderButton.removeEventListener('click', onCommentsLoaderButtonClick);
   currentCommentIndex = 0;
 }
-
-bigPictureClosing.addEventListener('click', () => {
-  closeBigPost();
-});
-
-bigPictureCommentsLoaderButton.addEventListener('click', () => {
-  renderComments();
-});
 
 export {openBigPost};

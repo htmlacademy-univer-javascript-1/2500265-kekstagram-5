@@ -1,32 +1,37 @@
-const getRandomInt = (min, max) => {
-  const lower = Math.ceil(Math.min(min, max));
-  const upper = Math.floor(Math.max(min, max));
-  return Math.floor(Math.random() * (upper - lower + 1) + lower);
-};
-
-const randomIdInRange = (bottom, top) => {
-  const usedIDs = [];
-
-  return function() {
-    let currentInt = getRandomInt(bottom, top);
-    if (usedIDs.length >= (top - bottom + 1)) {
-      return null;
-    }
-    while (usedIDs.includes(currentInt)) {
-      currentInt = getRandomInt(bottom, top);
-    }
-    usedIDs.push(currentInt);
-    return currentInt;
-  };
-};
-
+const TIME_FOR_ALERT = 5000;
 const isEscape = (evt) => evt.key === 'Escape';
 
-const randomValueFromArray = (currentArray) => currentArray[getRandomInt(0, currentArray.length - 1)];
+const showingAlert = (message) => {
+  const alertMessage = document.createElement('div');
+  alertMessage.style.zIndex = '100';
+  alertMessage.style.position = 'absolute';
+  alertMessage.style.left = '0';
+  alertMessage.style.top = '0';
+  alertMessage.style.right = '0';
+  alertMessage.style.padding = '10px 3px';
+  alertMessage.style.fontSize = '30px';
+  alertMessage.style.textAlign = 'center';
+  alertMessage.style.backgroundColor = 'red';
+  alertMessage.textContent = message;
+  document.body.append(alertMessage);
+  setTimeout(() => {
+    alertMessage.remove();
+  }, TIME_FOR_ALERT);
+};
+
+const checkForRepeatsInHashtags = (arr) => {
+  const elements = {};
+  for (const element of arr) {
+    if (elements[element]) {
+      return true;
+    }
+    elements[element] = 1;
+  }
+  return false;
+};
 
 export {
-  getRandomInt,
-  randomIdInRange,
-  randomValueFromArray,
-  isEscape
+  isEscape,
+  checkForRepeatsInHashtags,
+  showingAlert
 };
