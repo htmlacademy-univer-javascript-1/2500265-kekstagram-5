@@ -1,16 +1,7 @@
 import { makeAllPictures } from './draw-miniatures.js';
-import { getPosts } from './post.js';
-import { openBigPost } from './draw-big.js';
+import {getData} from './api.js';
+import { showingAlert } from './utils.js';
 
-const allPosts = getPosts();
-makeAllPictures(allPosts);
-
-const photoOnClick = (evt) => {
-  const currentElement = evt.target.closest('.picture');
-  if (currentElement) {
-    const currentPicture = allPosts.find((photo) => photo.url === currentElement.querySelector('.picture__img').getAttribute('src'));
-    openBigPost(currentPicture);
-  }
-};
-
-document.querySelector('.pictures').addEventListener('click', photoOnClick);
+getData()
+  .then((pictures) => makeAllPictures(pictures))
+  .catch((error) => showingAlert(error.message));
