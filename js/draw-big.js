@@ -28,17 +28,22 @@ const remakeComment = (comment) => {
 };
 
 const renderComments = () => {
-  let currentIndex = 0;
-  for (let i = currentCommentIndex; i < currentCommentIndex + COMMENT_STEP; i++) {
-    if (i === currentPhoto.comments.length) {
-      bigPictureCommentsLoaderButton.classList.add('hidden');
-      currentIndex = i - 1;
-      break;
-    }
-    currentIndex = i;
-    bigPictureAllComments.appendChild(remakeComment(currentPhoto.comments[i]));
+  const createdFragment = document.createDocumentFragment();
+  const commentsToShow = currentPhoto.comments.slice(currentCommentIndex, currentCommentIndex + COMMENT_STEP);
+
+  commentsToShow.forEach((currentComment) => {
+    createdFragment.appendChild(remakeComment(currentComment));
+  });
+
+  bigPictureAllComments.appendChild(createdFragment);
+  currentCommentIndex += commentsToShow.length;
+
+  if (currentCommentIndex >= currentPhoto.comments.length) {
+    bigPictureCommentsLoaderButton.classList.add('hidden');
+  } else {
+    bigPictureCommentsLoaderButton.classList.remove('hidden');
   }
-  currentCommentIndex = currentIndex + 1;
+
   bigPictureCommentsCounter.innerHTML = `${currentCommentIndex} из <span class="comments-count">${currentPhoto.comments.length}</span> комментариев`;
 };
 
@@ -62,13 +67,14 @@ const onClosePostClick = () => closeBigPost();
 const onCommentsLoaderButtonClick = () => renderComments();
 
 const openBigPost = (currentPost) => {
+  currentPhoto = currentPost;
+  currentCommentIndex = 0;
+  remakePhoto();
   bigPicture.classList.remove('hidden');
   document.body.classList.add('modal-open');
   document.addEventListener('keydown', listenKeydown);
   bigPictureClosing.addEventListener('click', onClosePostClick);
   bigPictureCommentsLoaderButton.addEventListener('click', onCommentsLoaderButtonClick);
-  currentPhoto = currentPost;
-  remakePhoto();
 };
 
 function closeBigPost() {
@@ -78,7 +84,6 @@ function closeBigPost() {
   document.removeEventListener('keydown', listenKeydown);
   bigPictureClosing.removeEventListener('click', onClosePostClick);
   bigPictureCommentsLoaderButton.removeEventListener('click', onCommentsLoaderButtonClick);
-  currentCommentIndex = 0;
 }
 
 export {openBigPost};
