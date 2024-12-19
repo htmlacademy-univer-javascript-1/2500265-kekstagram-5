@@ -48,7 +48,7 @@ const remakePhoto = () => {
   bigPictureDescr.textContent = currentPhoto.description;
 
   makeEmptyComments();
-  renderComments(currentPhoto);
+  renderComments();
 };
 
 const listenKeydown = (evt) => {

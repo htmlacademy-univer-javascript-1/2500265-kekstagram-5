@@ -18,7 +18,7 @@ const zoomOutImage = () => {
   let currentScaleValue = parseInt(scaleControlValue.value, 10);
   if (currentScaleValue > MIN_SCALE) {
     currentScaleValue -= STEP;
-    scaleControlValue.value = currentScaleValue.toString();
+    scaleControlValue.value = `${currentScaleValue.toString()}%`;
     imageUploadPreview.style.transform = `scale(${currentScaleValue / PERCENT})`;
   }
 };
@@ -27,7 +27,7 @@ const zoomInImage = () => {
   let currentScaleValue = parseInt(scaleControlValue.value, 10);
   if (currentScaleValue < MAX_SCALE) {
     currentScaleValue += STEP;
-    scaleControlValue.value = currentScaleValue.toString();
+    scaleControlValue.value = `${currentScaleValue.toString()}%`;
     imageUploadPreview.style.transform = `scale(${currentScaleValue / PERCENT})`;
   }
 };
