@@ -96,7 +96,7 @@ function hideEditingForm() {
   document.removeEventListener('keydown', onClosingWindowKeydown);
   hashtagsInputForm.removeEventListener('input', onInputInForm);
   descriptionInputForm.removeEventListener('input', onInputInForm);
-
+  uploadSubmitButton.disabled = false;
   currentForm.reset();
   pristine.reset();
 }
