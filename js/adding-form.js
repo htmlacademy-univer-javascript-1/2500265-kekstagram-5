@@ -83,6 +83,7 @@ function hideEditingForm() {
   uploadOverlay.classList.add('hidden');
   document.body.classList.remove('modal-open');
 
+  uploadSubmitButton.disabled = false;
   loadImage.value = '';
   photoPreview.src = DEFAULT_PICTURE;
   effectsPreview.forEach((currentPreview) => {
@@ -96,7 +97,7 @@ function hideEditingForm() {
   document.removeEventListener('keydown', onClosingWindowKeydown);
   hashtagsInputForm.removeEventListener('input', onInputInForm);
   descriptionInputForm.removeEventListener('input', onInputInForm);
-  uploadSubmitButton.disabled = false;
+
   currentForm.reset();
   pristine.reset();
 }
@@ -105,9 +106,10 @@ const showEditingForm = () => {
   const currentImage = loadImage.files[0];
 
   if (TYPES_OF_FILES.some((currentType) => currentImage.name.toLowerCase().endsWith(currentType))) {
-    photoPreview.src = URL.createObjectURL(currentImage);
+    const photoURL = URL.createObjectURL(currentImage);
+    photoPreview.src = photoURL;
     effectsPreview.forEach((currentPreview) => {
-      currentPreview.style.backgroundImage = `url('${URL.createObjectURL(currentImage)}')`;
+      currentPreview.style.backgroundImage = `url('${photoURL}')`;
     });
   }
 

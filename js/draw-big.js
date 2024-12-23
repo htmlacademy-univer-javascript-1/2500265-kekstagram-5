@@ -3,7 +3,7 @@ import { isEscape } from './utils.js';
 const COMMENT_STEP = 5;
 const bigPicture = document.querySelector('.big-picture');
 const bigPictureClosing = bigPicture.querySelector('.big-picture__cancel');
-const bigPicturePhoto = bigPicture.querySelector('.big-picture__img').querySelector('img');
+const bigPicturePhoto = bigPicture.querySelector('.big-picture__img img');
 const bigPictureLikesNumber = bigPicture.querySelector('.likes-count');
 const bigPictureDescr = bigPicture.querySelector('.social__caption');
 const bigPictureAllComments = bigPicture.querySelector('.social__comments');
@@ -11,7 +11,7 @@ const bigPictureCurrentCommentTemplate = bigPictureAllComments.querySelector('.s
 const bigPictureCommentsLoaderButton = bigPicture.querySelector('.comments-loader');
 const bigPictureCommentsCounter = bigPicture.querySelector('.social__comment-count');
 
-let currentPhoto;
+let currentPicture;
 let currentCommentIndex = 0;
 
 const makeEmptyComments = () => {
@@ -29,7 +29,7 @@ const remakeComment = (comment) => {
 
 const renderComments = () => {
   const createdFragment = document.createDocumentFragment();
-  const commentsToShow = currentPhoto.comments.slice(currentCommentIndex, currentCommentIndex + COMMENT_STEP);
+  const commentsToShow = currentPicture.comments.slice(currentCommentIndex, currentCommentIndex + COMMENT_STEP);
 
   commentsToShow.forEach((currentComment) => {
     createdFragment.appendChild(remakeComment(currentComment));
@@ -38,19 +38,19 @@ const renderComments = () => {
   bigPictureAllComments.appendChild(createdFragment);
   currentCommentIndex += commentsToShow.length;
 
-  if (currentCommentIndex >= currentPhoto.comments.length) {
+  if (currentCommentIndex >= currentPicture.comments.length) {
     bigPictureCommentsLoaderButton.classList.add('hidden');
   } else {
     bigPictureCommentsLoaderButton.classList.remove('hidden');
   }
 
-  bigPictureCommentsCounter.innerHTML = `${currentCommentIndex} из <span class="comments-count">${currentPhoto.comments.length}</span> комментариев`;
+  bigPictureCommentsCounter.innerHTML = `${currentCommentIndex} из <span class="comments-count">${currentPicture.comments.length}</span> комментариев`;
 };
 
 const remakePhoto = () => {
-  bigPicturePhoto.src = currentPhoto.url;
-  bigPictureLikesNumber.textContent = currentPhoto.likes;
-  bigPictureDescr.textContent = currentPhoto.description;
+  bigPicturePhoto.src = currentPicture.url;
+  bigPictureLikesNumber.textContent = currentPicture.likes;
+  bigPictureDescr.textContent = currentPicture.description;
 
   makeEmptyComments();
   renderComments();
@@ -67,14 +67,14 @@ const onClosePostClick = () => closeBigPost();
 const onCommentsLoaderButtonClick = () => renderComments();
 
 const openBigPost = (currentPost) => {
-  currentPhoto = currentPost;
+  currentPicture = currentPost;
   currentCommentIndex = 0;
   remakePhoto();
-  bigPicture.classList.remove('hidden');
-  document.body.classList.add('modal-open');
   document.addEventListener('keydown', listenKeydown);
   bigPictureClosing.addEventListener('click', onClosePostClick);
   bigPictureCommentsLoaderButton.addEventListener('click', onCommentsLoaderButtonClick);
+  document.body.classList.add('modal-open');
+  bigPicture.classList.remove('hidden');
 };
 
 function closeBigPost() {

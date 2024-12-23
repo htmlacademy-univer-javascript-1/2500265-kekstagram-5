@@ -1,4 +1,5 @@
 const TIME_FOR_ALERT = 5000;
+const TIMEOUT_DELAY = 500;
 const isEscape = (evt) => evt.key === 'Escape';
 
 const getRandomIntValue = (min, max) => {
@@ -21,7 +22,7 @@ const getArrayRandomPrototype = (currentArray, prototypeSize) => {
   return prototype;
 };
 
-const debounce = (callback, timeoutDelay = 500) => {
+const debounce = (callback, timeoutDelay = TIMEOUT_DELAY) => {
   let timeoutId;
   return (...rest) => {
     clearTimeout(timeoutId);

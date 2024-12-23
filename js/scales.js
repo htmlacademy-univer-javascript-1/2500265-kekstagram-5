@@ -1,30 +1,26 @@
 const MIN_SCALE = 25;
 const MAX_SCALE = 100;
 const STEP = 25;
-const PERCENT = 100;
+const DEFAULT_SCALE = 100;
 
 const imageUploadPreview = document.querySelector('.img-upload__preview img');
 const zoomOutButton = document.querySelector('.scale__control--smaller');
 const zoomInButton = document.querySelector('.scale__control--bigger');
 const scaleControlValue = document.querySelector('.scale__control--value');
 
-const zoomOutImage = () => {
-  let currentScaleValue = parseInt(scaleControlValue.value, 10);
-  if (currentScaleValue > MIN_SCALE) {
-    currentScaleValue -= STEP;
-    scaleControlValue.value = `${currentScaleValue.toString()}%`;
-    imageUploadPreview.style.transform = `scale(${currentScaleValue / PERCENT})`;
+const updateScale = (direction) => {
+  let scaleValue = parseInt(scaleControlValue.value, 10) || DEFAULT_SCALE;
+  const newScaleValue = scaleValue + direction * STEP;
+
+  if (newScaleValue >= MIN_SCALE && newScaleValue <= MAX_SCALE) {
+    scaleValue = newScaleValue;
+    scaleControlValue.value = `${scaleValue}%`;
+    imageUploadPreview.style.transform = `scale(${scaleValue / DEFAULT_SCALE})`;
   }
 };
 
-const zoomInImage = () => {
-  let currentScaleValue = parseInt(scaleControlValue.value, 10);
-  if (currentScaleValue < MAX_SCALE) {
-    currentScaleValue += STEP;
-    scaleControlValue.value = `${currentScaleValue.toString()}%`;
-    imageUploadPreview.style.transform = `scale(${currentScaleValue / PERCENT})`;
-  }
-};
+const zoomOutImage = () => updateScale(-1);
+const zoomInImage = () => updateScale(1);
 
 const addEventListenerToScaleElemets = () => {
   zoomOutButton.addEventListener('click', zoomOutImage);
@@ -38,6 +34,7 @@ const removeEventListenerFromScaleElemets = () => {
 
 const setDefaultPhotoSize = () => {
   imageUploadPreview.style.transform = 'scale(1)';
+  scaleControlValue.value = `${DEFAULT_SCALE}%`;
 };
 
 export { addEventListenerToScaleElemets, removeEventListenerFromScaleElemets, setDefaultPhotoSize };
